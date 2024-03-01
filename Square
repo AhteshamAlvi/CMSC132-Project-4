@@ -1,0 +1,45 @@
+package game;
+
+
+
+import java.awt.Graphics;
+import java.awt.Polygon;
+import java.util.Random;
+import java.awt.Point;
+
+
+public class Square {
+	int maxX;
+	int maxY;
+	
+	Polygon shape; 
+	Point position; 
+	int size = 30; 
+
+	 
+	public Square(int maxX, int maxY) {
+		this.position = generateRandomPosition(maxX - size, maxY - size);
+	    updateShape();
+	}
+
+	public void draw(Graphics g) {
+	    g.drawPolygon(shape);
+	}
+
+	    
+	private Point generateRandomPosition(int maxX, int maxY) {
+		Random rand = new Random();
+	   return new Point(rand.nextInt(maxX), rand.nextInt(maxY));
+	}
+
+	   
+	private void updateShape() {
+		this.shape = new Polygon();
+	    this.shape.addPoint(position.x, position.y);
+	    this.shape.addPoint(position.x + size, position.y);
+	    this.shape.addPoint(position.x + size, position.y + size);
+	    this.shape.addPoint(position.x, position.y + size);
+	}
+	
+		
+}
