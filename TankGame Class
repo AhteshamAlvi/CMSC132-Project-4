@@ -1,4 +1,3 @@
-//TankGame CLASS:
 package game;
 
 /*
@@ -12,30 +11,27 @@ import java.awt.*;
 import java.awt.event.*;
 
 class TankGame extends Game {
-	static int counter = 0;	
-
-  //This is the code I added --------------------- <- COMMENT --------------------------------------
+	static int counter = 0;
 	Tank tank1, tank2;
 	Point[] tankPoints;
 	Point a;
-	//until here --------------------- <- COMMENT --------------------------------------
-
+	
 	public TankGame() {
-	    super("YourGameName!",800,600);
-	    this.setFocusable(true);
+		super("YourGameName!",800,600);
+		this.setFocusable(true);
 		this.requestFocus();
-
-		//This is the code I added --------------------- <- COMMENT --------------------------------------
+		
 		tankPoints = new Point[4];
 		tankPoints[0] = new Point(0,0);
-		tankPoints[1] = new Point(10,0);
-		tankPoints[2] = new Point(10,10);
-		tankPoints[3] = new Point(0,10);
-		a = new Point(200,200);
+		tankPoints[1] = new Point(30,0);
+		tankPoints[2] = new Point(30,30);
+		tankPoints[3] = new Point(0,30);
+		a = new Point(400,300);
 		
 		this.tank1 = new Tank(tankPoints, a, 0);
-		//until here --------------------- <- COMMENT --------------------------------------
-
+		
+		this.addKeyListener(tank1);
+		
 	}
   
 	public void paint(Graphics brush) {
@@ -47,48 +43,14 @@ class TankGame extends Game {
     	// each time the canvas is repainted
     	counter++;
     	brush.setColor(Color.white);
-		brush.drawString("Counter is " + counter,10,10);
-
-		//This is the code I added --------------------- <- COMMENT --------------------------------------
+    	brush.drawString("Counter is " + counter,10,10);
+    	
+		tank1.move();
 		tank1.paint(brush);
-		//until here --------------------- <- COMMENT --------------------------------------
-
-	}
+  }
   
 	public static void main (String[] args) {
 		TankGame a = new TankGame();
-		a.repaint();
+   		a.repaint();
 	}
 }
-
-
-
-// TANK CLASS: Pretty much all of this was code I added.
-
-package game;
-
-import java.awt.Graphics;
-
-public class Tank extends Polygon {
-	int[] x,y;
-	
-	public Tank(Point[] inShape, Point inPosition, double inRotation) {
-		super(inShape, inPosition, inRotation);
-		
-		this.x = new int[this.getPoints().length];
-		this.y = new int[this.getPoints().length];
-	}
-	
-	public void paint(Graphics brush) {		
-		
-		for(int i = 0; i < this.getPoints().length; i++) {
-			this.x[i] = (int) this.getPoints()[i].getX();
-			this.y[i] = (int) this.getPoints()[i].getY();
-		}
-		
-		brush.drawPolygon(this.x, this.y, 4);
-	}
-}
-
-
-
