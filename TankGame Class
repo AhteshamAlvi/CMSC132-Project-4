@@ -13,7 +13,7 @@ import java.awt.event.*;
 class TankGame extends Game {
 	static int counter = 0;
 	Tank tank1, tank2;
-	Point[] tankPoints;
+	Point[] tank1Points;
 	Point a;
 	
 	public TankGame() {
@@ -21,17 +21,24 @@ class TankGame extends Game {
 		this.setFocusable(true);
 		this.requestFocus();
 		
-		tankPoints = new Point[4];
-		tankPoints[0] = new Point(0,0);
-		tankPoints[1] = new Point(30,0);
-		tankPoints[2] = new Point(30,30);
-		tankPoints[3] = new Point(0,30);
-		a = new Point(400,300);
+		tank1Points = new Point[12];
+		tank1Points[0] = new Point(0,0);
+		tank1Points[1] = new Point(30,0);
+		tank1Points[2] = new Point(30,10);
+		tank1Points[3] = new Point(35,10);
+		tank1Points[4] = new Point(35,20);
+		tank1Points[5] = new Point(10,20);
+		tank1Points[6] = new Point(10,10);
+		tank1Points[7] = new Point(35,10);
+		tank1Points[8] = new Point(35,20);
+		tank1Points[9] = new Point(30,20);
+		tank1Points[10] = new Point(30,30);
+		tank1Points[11] = new Point(0,30);
+		a = new Point(200,200);
 		
-		this.tank1 = new Tank(tankPoints, a, 0);
+ 		this.tank1 = new Tank(tank1Points, a, 0);
 		
-		this.addKeyListener(tank1);
-		
+		this.addKeyListener(tank1);	
 	}
   
 	public void paint(Graphics brush) {
