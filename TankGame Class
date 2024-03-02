@@ -15,6 +15,7 @@ class TankGame extends Game {
 	Tank tank1, tank2;
 	Point[] tank1Points;
 	Point a;
+	RandomSquares randomSquares; // Omar 
 	
 	public TankGame() {
 		super("YourGameName!",800,600);
@@ -51,7 +52,7 @@ class TankGame extends Game {
     	counter++;
     	brush.setColor(Color.white);
     	brush.drawString("Counter is " + counter,10,10);
-    	
+    		randomSquares.paint(brush); // Omar
 		tank1.move();
 		tank1.paint(brush);
   }
