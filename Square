@@ -21,12 +21,33 @@ public class RandomSquares {
     }
 
     private void generateSquares() {
-        for (int i = 0; i < numberOfSquares; i++) {
-            
-            int x = random.nextInt(800 - squareSize);
-            int y = random.nextInt(600 - squareSize);
-            positions.add(new Point(x, y));
-        }
+//        for (int i = 0; i < numberOfSquares; i++) {
+//            
+//            int x = random.nextInt(800 - squareSize);
+//            int y = random.nextInt(600 - squareSize);
+//            positions.add(new Point(x, y));
+//        }
+    	  for (int i = 0; i < numberOfSquares; i++) {
+    	        while(true) {
+    	            int x = random.nextInt(800 - squareSize);
+    	            int y = random.nextInt(600 - squareSize);
+    	            
+    	            // Check if the square overlaps with forbidden points
+    	            if (!isOverlapping(x, y, 185, 285) && !isOverlapping(x, y, 585, 285)) {
+    	                positions.add(new Point(x, y));
+    	                break; // Break the loop if the square is not overlapping
+    	            }
+    	        }
+    	    }
+    }
+    
+    private boolean isOverlapping(int squareX, int squareY, int pointX, int pointY) {
+    	 int buffer = 50; // Buffer in pixels
+    	    int expandedX1 = pointX - buffer;
+    	    int expandedY1 = pointY - buffer;
+    	    int expandedX2 = pointX + buffer;
+    	    int expandedY2 = pointY + buffer;
+    	    return !(squareX + squareSize < expandedX1 || squareX > expandedX2 || squareY + squareSize < expandedY1 || squareY > expandedY2);
     }
 
     public void paint(Graphics brush) {
@@ -34,4 +55,3 @@ public class RandomSquares {
             brush.fillRect((int)position.getX(), (int)position.getY(), squareSize, squareSize);
         }
     }
-}
