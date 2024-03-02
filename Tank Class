@@ -5,21 +5,19 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
 public class Tank extends Polygon implements KeyListener{
-	int[] x,y;
-	double increment;
-	int degrees;
-	Point[] shape;
-	boolean forwards, backwards, left, right;
+	private int[] x,y;
+	private double increment;
+	private int degrees;
+	private boolean forwards, backwards, left, right;
 	
 	public Tank(Point[] inShape, Point inPosition, double inRotation) {
 		super(inShape, inPosition, inRotation);
 		
 		this.x = new int[this.getPoints().length];
 		this.y = new int[this.getPoints().length];
-		this.shape = inShape;
 		
-		this.increment = 3;
-		this.degrees = 3;
+		this.increment = 2;
+		this.degrees = 2;
 		
 		this.forwards = false;
 		this.backwards = false;
@@ -40,23 +38,31 @@ public class Tank extends Polygon implements KeyListener{
 	public void move() {
 		if(this.left && this.forwards) {
 			this.rotate(-this.degrees);
-			super.position.setX(super.position.getX() + Math.cos(Math.toRadians(rotation)) * increment);
-			super.position.setY(super.position.getY() + Math.sin(Math.toRadians(rotation)) * increment);
+			super.position.setX(super.position.getX() 
+					+ Math.cos(Math.toRadians(rotation)) * increment);
+			super.position.setY(super.position.getY() 
+					+ Math.sin(Math.toRadians(rotation)) * increment);
 			
 		} else if(this.right && this.forwards) {
 			this.rotate(this.degrees);
-			super.position.setX(super.position.getX() + Math.cos(Math.toRadians(rotation)) * increment);
-			super.position.setY(super.position.getY() + Math.sin(Math.toRadians(rotation)) * increment);
+			super.position.setX(super.position.getX() 
+					+ Math.cos(Math.toRadians(rotation)) * increment);
+			super.position.setY(super.position.getY() 
+					+ Math.sin(Math.toRadians(rotation)) * increment);
 			
 		} else if(this.left && this.backwards) {
 			this.rotate(-this.degrees);
-			super.position.setX(super.position.getX() - Math.cos(Math.toRadians(rotation)) * increment);
-			super.position.setY(super.position.getY() - Math.sin(Math.toRadians(rotation)) * increment);
+			super.position.setX(super.position.getX() 
+					- Math.cos(Math.toRadians(rotation)) * increment);
+			super.position.setY(super.position.getY() 
+					- Math.sin(Math.toRadians(rotation)) * increment);
 			
 		} else if(this.right && this.backwards) {
 			this.rotate(this.degrees);
-			super.position.setX(super.position.getX() - Math.cos(Math.toRadians(rotation)) * increment);
-			super.position.setY(super.position.getY() - Math.sin(Math.toRadians(rotation)) * increment);
+			super.position.setX(super.position.getX() 
+					- Math.cos(Math.toRadians(rotation)) * increment);
+			super.position.setY(super.position.getY() 
+					- Math.sin(Math.toRadians(rotation)) * increment);
 		
 		} else if(this.left) {
 			this.rotate(-this.degrees);
@@ -65,12 +71,16 @@ public class Tank extends Polygon implements KeyListener{
 			this.rotate(this.degrees);	
 			
 		} else if(this.forwards) {
-			super.position.setX(super.position.getX() + Math.cos(Math.toRadians(rotation)) * increment);
-			super.position.setY(super.position.getY() + Math.sin(Math.toRadians(rotation)) * increment);
+			super.position.setX(super.position.getX() 
+					+ Math.cos(Math.toRadians(rotation)) * increment);
+			super.position.setY(super.position.getY() 
+					+ Math.sin(Math.toRadians(rotation)) * increment);
 			
 		} else if(this.backwards) {
-			super.position.setX(super.position.getX() - Math.cos(Math.toRadians(rotation)) * increment);
-			super.position.setY(super.position.getY() - Math.sin(Math.toRadians(rotation)) * increment);
+			super.position.setX(super.position.getX() 
+					- Math.cos(Math.toRadians(rotation)) * increment);
+			super.position.setY(super.position.getY() 
+					- Math.sin(Math.toRadians(rotation)) * increment);
 		}
 	}
 
