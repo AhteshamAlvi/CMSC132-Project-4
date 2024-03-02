@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.Random;
 
 public class RandomSquares {
-    private ArrayList<Point> positions; // Holds the top-left corner positions of each square
+    private ArrayList<Point> positions; 
     private int numberOfSquares;
     private int squareSize;
     private Random random;
