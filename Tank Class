@@ -6,7 +6,8 @@ import java.awt.event.KeyListener;
 
 public class Tank extends Polygon implements KeyListener{
 	int[] x,y;
-	double increment, rotation, rotator;
+	double increment;
+	int degrees;
 	Point[] shape;
 	boolean forwards, backwards, left, right;
 	
@@ -16,10 +17,9 @@ public class Tank extends Polygon implements KeyListener{
 		this.x = new int[this.getPoints().length];
 		this.y = new int[this.getPoints().length];
 		this.shape = inShape;
-		this.rotation = inRotation;
 		
-		this.increment = 5;
-		this.rotator = 1;
+		this.increment = 3;
+		this.degrees = 3;
 		
 		this.forwards = false;
 		this.backwards = false;
@@ -34,34 +34,43 @@ public class Tank extends Polygon implements KeyListener{
 			this.y[i] = (int) this.getPoints()[i].getY();
 		}
 		
-		brush.drawPolygon(this.x, this.y, 4);
+		brush.drawPolygon(this.x, this.y, 12);
 	}
 	
 	public void move() {
-		if(this.left) {
-			this.rotation += rotator;
-			for(int i = 0; i < this.getPoints().length; i++) {
-				this.shape[i].setX(this.shape[i].getX() + increment);
-				this.shape[i].setY(this.shape[i].getY() - increment);
-			}
+		if(this.left && this.forwards) {
+			this.rotate(-this.degrees);
+			super.position.setX(super.position.getX() + Math.cos(Math.toRadians(rotation)) * increment);
+			super.position.setY(super.position.getY() + Math.sin(Math.toRadians(rotation)) * increment);
 			
+		} else if(this.right && this.forwards) {
+			this.rotate(this.degrees);
+			super.position.setX(super.position.getX() + Math.cos(Math.toRadians(rotation)) * increment);
+			super.position.setY(super.position.getY() + Math.sin(Math.toRadians(rotation)) * increment);
+			
+		} else if(this.left && this.backwards) {
+			this.rotate(-this.degrees);
+			super.position.setX(super.position.getX() - Math.cos(Math.toRadians(rotation)) * increment);
+			super.position.setY(super.position.getY() - Math.sin(Math.toRadians(rotation)) * increment);
+			
+		} else if(this.right && this.backwards) {
+			this.rotate(this.degrees);
+			super.position.setX(super.position.getX() - Math.cos(Math.toRadians(rotation)) * increment);
+			super.position.setY(super.position.getY() - Math.sin(Math.toRadians(rotation)) * increment);
+		
+		} else if(this.left) {
+			this.rotate(-this.degrees);
+		
 		} else if(this.right) {
-			for(int i = 0; i < this.getPoints().length; i++) {
-				this.shape[i].setX(this.shape[i].getX() - increment);
-				this.shape[i].setY(this.shape[i].getY() + increment);
-			}			
+			this.rotate(this.degrees);	
 			
 		} else if(this.forwards) {
-			for(int i = 0; i < this.getPoints().length; i++) {
-				this.shape[i].setX(this.shape[i].getX() - increment);
-				this.shape[i].setY(this.shape[i].getY() - increment);
-			}
+			super.position.setX(super.position.getX() + Math.cos(Math.toRadians(rotation)) * increment);
+			super.position.setY(super.position.getY() + Math.sin(Math.toRadians(rotation)) * increment);
 			
 		} else if(this.backwards) {
-			for(int i = 0; i < this.getPoints().length; i++) {
-				this.shape[i].setX(this.shape[i].getX() + increment);
-				this.shape[i].setY(this.shape[i].getY() + increment);
-			}		
+			super.position.setX(super.position.getX() - Math.cos(Math.toRadians(rotation)) * increment);
+			super.position.setY(super.position.getY() - Math.sin(Math.toRadians(rotation)) * increment);
 		}
 	}
 
