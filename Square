@@ -5,47 +5,59 @@ import java.awt.Graphics;
 import java.util.ArrayList;
 import java.util.Random;
 
-public class RandomSquares{
-    private ArrayList<Point> positions; 
-    private int numberOfSquares;
-    private int squareSize;
+public class RandomPolygons {
+    private ArrayList<Polygon> polygons;
+    private int numberOfPolygons;
+    private int polygonSize;
     private Random random;
 
-    public RandomSquares(int numberOfSquares, int squareSize) {
-        this.numberOfSquares = numberOfSquares;
-        this.squareSize = squareSize;
-        positions = new ArrayList<>();
+    public RandomPolygons(int numberOfPolygons, int polygonSize) {
+        this.numberOfPolygons = numberOfPolygons;
+        this.polygonSize = polygonSize;
+        polygons = new ArrayList<>();
         random = new Random();
-
-        generateSquares();
+        generatePolygons();
     }
 
-    private void generateSquares() {
-    	int topBorderHeight = 30;
-    	for (int i = 0; i < numberOfSquares; i++) {
-    		while(true) {
-    			int x = random.nextInt(800 - squareSize);
-    	        int y = random.nextInt(600 - squareSize - topBorderHeight) + topBorderHeight;
-    	        if (!isOverlapping(x, y, 185, 285) && !isOverlapping(x, y, 585, 285)) {
-    	        	positions.add(new Point(x, y));
-    	            break; // Break the loop if the square is not overlapping
-    	        }
-    	    }
-    	}
+    private void generatePolygons() {
+        int topBorderHeight = 30;
+        for (int i = 0; i < numberOfPolygons; i++) {
+            while (true) {
+                int x = random.nextInt(800 - polygonSize);
+                int y = random.nextInt(600 - polygonSize - topBorderHeight) + topBorderHeight;
+                if (!isOverlapping(x, y, 185, 285) && !isOverlapping(x, y, 585, 285)) {
+                    Point[] squareShape = {
+                        new Point(x, y),
+                        new Point(x + polygonSize, y),
+                        new Point(x + polygonSize, y + polygonSize),
+                        new Point(x, y + polygonSize)
+                    };
+                    polygons.add(new Polygon(squareShape, new Point(x, y), 0));
+                    break;
+                }
+            }
+        }
     }
-    
+
     private boolean isOverlapping(int squareX, int squareY, int pointX, int pointY) {
-    	 int buffer = 50; // Buffer in pixels
-    	    int expandedX1 = pointX - buffer;
-    	    int expandedY1 = pointY - buffer;
-    	    int expandedX2 = pointX + buffer;
-    	    int expandedY2 = pointY + buffer;
-    	    return !(squareX + squareSize < expandedX1 || squareX > expandedX2 || squareY + squareSize < expandedY1 || squareY > expandedY2);
+        int buffer = 50; // Buffer in pixels
+        int expandedX1 = pointX - buffer;
+        int expandedY1 = pointY - buffer;
+        int expandedX2 = pointX + buffer;
+        int expandedY2 = pointY + buffer;
+        return !(squareX + polygonSize < expandedX1 || squareX > expandedX2 || squareY + polygonSize < expandedY1 || squareY > expandedY2);
     }
 
     public void paint(Graphics brush) {
-        for (Point position : positions) {
-            brush.fillRect((int)position.getX(), (int)position.getY(), squareSize, squareSize);
+        for (Polygon polygon : polygons) {
+            Point[] points = polygon.getPoints();
+            int[] xPoints = new int[points.length];
+            int[] yPoints = new int[points.length];
+            for (int i = 0; i < points.length; i++) {
+                xPoints[i] = (int) points[i].x;
+                yPoints[i] = (int) points[i].y;
+            }
+            brush.fillPolygon(xPoints, yPoints, points.length);
         }
     }
 }
