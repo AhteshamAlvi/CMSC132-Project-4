@@ -15,7 +15,8 @@ class TankGame extends Game {
 	Tank tank1, tank2;
 	Point[] tank1Points;
 	Point a;
-	RandomSquares randomSquares; // Omar 
+	RandomPolygons randomSquares; // Omar 
+	Border gameBorder;
 	
 	public TankGame() {
 		super("YourGameName!",800,600);
@@ -35,9 +36,16 @@ class TankGame extends Game {
 		tank1Points[9] = new Point(30,20);
 		tank1Points[10] = new Point(30,30);
 		tank1Points[11] = new Point(0,30);
-		a = new Point(200,200);
 		
+		a = new Point(185,285);
+	
  		this.tank1 = new Tank(tank1Points, a, 0);
+ 		
+ 		this.randomSquares = new RandomPolygons(100, 10);
+ 		
+ 		this.gameBorder = new Border(800, 600, 10, Color.WHITE);
+ 		
+ 		
 		
 		this.addKeyListener(tank1);	
 	}
@@ -52,13 +60,16 @@ class TankGame extends Game {
     	counter++;
     	brush.setColor(Color.white);
     	brush.drawString("Counter is " + counter,10,10);
-    		randomSquares.paint(brush); // Omar
+    	randomSquares.paint(brush); // Omar
 		tank1.move();
 		tank1.paint(brush);
+		gameBorder.paint(brush);
+		
   }
   
 	public static void main (String[] args) {
 		TankGame a = new TankGame();
    		a.repaint();
+   		
 	}
 }
