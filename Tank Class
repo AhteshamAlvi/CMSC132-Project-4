@@ -3,16 +3,17 @@ package game;
 import java.awt.Graphics;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.util.ArrayList;
 
 public class Tank extends Polygon implements KeyListener{
 	private int[] x,y;
-	private double increment;
-	private int degrees;
+	private double increment, originalRotation;
+	private int degrees, keyL, keyF, keyR, keyB, keyS;
 	private boolean forwards, backwards, left, right;
-
-	private ArrayList<Shooting> shooting; // Broski this is for shooitng
+	private ArrayList<Canon> canon;
 	
-	public Tank(Point[] inShape, Point inPosition, double inRotation) {
+	public Tank(Point[] inShape, Point inPosition, double inRotation, 
+			int keyL, int keyF, int keyR, int keyB, int keyS) {
 		super(inShape, inPosition, inRotation);
 		
 		this.x = new int[this.getPoints().length];
@@ -20,13 +21,20 @@ public class Tank extends Polygon implements KeyListener{
 		
 		this.increment = 2;
 		this.degrees = 2;
+		this.originalRotation = inRotation;
+		
+		this.keyL = keyL;
+		this.keyF = keyF;
+		this.keyR = keyR; 
+		this.keyB = keyB; 
+		this.keyS = keyS;
 		
 		this.forwards = false;
 		this.backwards = false;
 		this.left = false;
 		this.right = false;
 
-		shooting = new ArrayList<>();shooting = new ArrayList<>(); // for shooitng
+		this.canon = new ArrayList<>(); 
 	}
 	
 	public void paint(Graphics brush) {		
@@ -36,10 +44,10 @@ public class Tank extends Polygon implements KeyListener{
 			this.y[i] = (int) this.getPoints()[i].getY();
 		}
 
-		for (int i = 0; i < shooting.size(); i++) {
-		    Shooting projectile = shooting.get(i);
+		for (int i = 0; i < canon.size(); i++) {
+		    Canon projectile = canon.get(i);
 		    projectile.paint(brush);
-		} // for shooting
+		} 
 		
 		brush.drawPolygon(this.x, this.y, 12);
 	}
@@ -92,50 +100,69 @@ public class Tank extends Polygon implements KeyListener{
 					- Math.sin(Math.toRadians(rotation)) * increment);
 		}
 
-		ArrayList<Shooting> remove = new ArrayList<>();
-		for (int i = 0; i < shooting.size(); i++) {
-		    Shooting projectile = shooting.get(i);
+		ArrayList<Canon> remove = new ArrayList<>();
+		for (int i = 0; i < canon.size(); i++) {
+		    Canon projectile = canon.get(i);
 		    projectile.move();
-		    if (projectile.getPosition().getX() < 0 || projectile.getPosition().getX() > 800 ||
-		        projectile.getPosition().getY() < 0 || projectile.getPosition().getY() > 600) {
+		    if (projectile.getPosition().getX() < 0 || 
+		    		projectile.getPosition().getX() > 800 ||
+		        projectile.getPosition().getY() < 0 || 
+		        projectile.getPosition().getY() > 600) {
 		        remove.add(projectile);
 		    }
 		}
-		shooting.removeAll(remove); // 95 to this is for shooting
+		canon.removeAll(remove); 
+	}
+	
+	private void shoot() {
+	    Canon newProjectile = new Canon(new Point(super.position.getX(), 
+	    		super.position.getY()), super.rotation, 5);
+	    canon.add(newProjectile);
+	} 
+	
+	public ArrayList<Canon> getCanon() {
+		return this.canon;
+	}
+	
+	public void death(double x, double y) {
+		super.position.setX(x);
+		super.position.setY(y);
+		super.rotation = originalRotation;
+	}
+	
+	public void victory(double x, double y) {
+		super.position.setX(x);
+		super.position.setY(y);
+		super.rotation = originalRotation;
 	}
 
 	@Override
 	public void keyPressed(KeyEvent e) {
-		if(e.getKeyCode() == 37) {
+		if(e.getKeyCode() == this.keyL) {
 			this.left = true;
-		} else if(e.getKeyCode() == 38) {
+		} else if(e.getKeyCode() == this.keyF) {
 			this.forwards = true;
-		} else if(e.getKeyCode() == 39) {
+		} else if(e.getKeyCode() == this.keyR) {
 			this.right = true;
-		} else if(e.getKeyCode() == 40) {
+		} else if(e.getKeyCode() == this.keyB) {
 			this.backwards = true;
-		} else if (e.getKeyCode() == KeyEvent.VK_B) { //shooitng
+		} else if (e.getKeyCode() == this.keyS) { 
 			shoot();
-		}		
+		}
 	}
 
 	@Override
 	public void keyReleased(KeyEvent e) {
-		if(e.getKeyCode() == 37) {
+		if(e.getKeyCode() == this.keyL) {
 			this.left = false;
-		} else if(e.getKeyCode() == 38) {
+		} else if(e.getKeyCode() == this.keyF) {
 			this.forwards = false;
-		} else if(e.getKeyCode() == 39) {
+		} else if(e.getKeyCode() == this.keyR) {
 			this.right = false;
-		} else if(e.getKeyCode() == 40) {
+		} else if(e.getKeyCode() == this.keyB) {
 			this.backwards = false;
 		}
 	}	
-
-	private void shoot() {
-	    Shooting newProjectile = new Shooting(new Point(super.position.getX(), super.position.getY()), super.rotation, 5);
-	    shooting.add(newProjectile);
-	} // shooting
 	
 	@Override
 	public void keyTyped(KeyEvent e) {}
