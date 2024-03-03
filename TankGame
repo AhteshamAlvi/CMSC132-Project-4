@@ -15,50 +15,36 @@ class TankGame extends Game {
 	static int tank1Score = 0;
 	static int tank2Score = 0;
 	Tank tank1, tank2;
-	Point[] tank1Points, tank2Points;
 	Point a, b;
-	RandomPolygons randomSquares; 
-	Border border;
+	RandomPolygons randomPolygons; 
 	
 	public TankGame() {
 		super("YourGameName!",800,600);
 		this.setFocusable(true);
 		this.requestFocus();
 		
-		tank1Points = new Point[12];
-		tank1Points[0] = new Point(0,0);
-		tank1Points[1] = new Point(30,0);
-		tank1Points[2] = new Point(30,10);
-		tank1Points[3] = new Point(35,10);
-		tank1Points[4] = new Point(35,20);
-		tank1Points[5] = new Point(10,20);
-		tank1Points[6] = new Point(10,10);
-		tank1Points[7] = new Point(35,10);
-		tank1Points[8] = new Point(35,20);
-		tank1Points[9] = new Point(30,20);
-		tank1Points[10] = new Point(30,30);
-		tank1Points[11] = new Point(0,30);
+		Point[] tank1Points = {
+				new Point(0,0), new Point(30,0), new Point(30,10), 
+				new Point(35,10), new Point(35,20), new Point(10,20), 
+				new Point(10,10), new Point(35,10), new Point(35,20), 
+				new Point(30,20), new Point(30,30), new Point(0,30),
+			};
 		a = new Point(185,285);
 		
-		tank2Points = new Point[12];
-		tank2Points[0] = new Point(0,0);
-		tank2Points[1] = new Point(30,0);
-		tank2Points[2] = new Point(30,10);
-		tank2Points[3] = new Point(35,10);
-		tank2Points[4] = new Point(35,20);
-		tank2Points[5] = new Point(10,20);
-		tank2Points[6] = new Point(10,10);
-		tank2Points[7] = new Point(35,10);
-		tank2Points[8] = new Point(35,20);
-		tank2Points[9] = new Point(30,20);
-		tank2Points[10] = new Point(30,30);
-		tank2Points[11] = new Point(0,30);
+		Point[] tank2Points = {
+				new Point(0,0), new Point(30,0), new Point(30,10), 
+				new Point(35,10), new Point(35,20), new Point(10,20), 
+				new Point(10,10), new Point(35,10), new Point(35,20), 
+				new Point(30,20), new Point(30,30), new Point(0,30),
+			};
 		b = new Point(585,285);
 		
  		this.tank1 = new Tank(tank1Points, a, 0, 37, 38, 39, 40, 77);
  		this.tank2 = new Tank(tank2Points, b, 180, 65, 87, 68, 83, 81);
- 		this.randomSquares = new RandomPolygons(100, 20);
- 		this.border = new Border(800, 600, 10, Color.WHITE);
+ 		
+ 		this.randomPolygons = new RandomPolygons(100, 20);
+ 		this.randomPolygons.generateBorder();
+ 		this.randomPolygons.generateSquares();
 		
 		this.addKeyListener(tank1);	
 		this.addKeyListener(tank2);
@@ -73,25 +59,29 @@ class TankGame extends Game {
     	// each time the canvas is repainted
     	counter++;
     	brush.setColor(Color.white);
-    	brush.drawString("Counter is " + counter,10,10);
+    	brush.drawString("Counter is " + counter,10,15);
     	
-    	if(tank1.collision(tank2.getCanon())) {
+    	if(tank1.tankBulletCollision(tank2, tank2.getCanon())) {
     		tank1.death(185, 285);
     		tank2.victory(585, 285);
-    		Score score2 = tank2 -> TankGame.tank2Score++;
+    		TankGame.tank2Score++;
     	}
     	
-    	if(tank2.collision(tank1.getCanon())) {
+    	if(tank2.tankBulletCollision(tank1, tank1.getCanon())) {
     		tank1.victory(185, 285);
     		tank2.death(585, 285);
-    		Score score1 = tank1 -> TankGame.tank1Score++;
+    		TankGame.tank1Score++;
     	}
     	
-    	brush.drawString("Player 1 Score: " + TankGame.tank1Score, 200, 10);
-    	brush.drawString("Player 2 Score: " + TankGame.tank2Score, 500, 10);
+    	tank1.obstacleBulletCollision(tank1, RandomPolygons.getPolygons(), 
+    			tank1.getCanon());
+     	tank2.obstacleBulletCollision(tank2, RandomPolygons.getPolygons(), 
+    			tank1.getCanon());
+    	
+    	brush.drawString("Player 1 Score: " + TankGame.tank1Score, 200, 15);
+    	brush.drawString("Player 2 Score: " + TankGame.tank2Score, 500, 15);
 
-		randomSquares.paint(brush);
-		border.paint(brush);
+		randomPolygons.paint(brush);
 		tank1.move();
 		tank2.move();
 		tank1.paint(brush);
