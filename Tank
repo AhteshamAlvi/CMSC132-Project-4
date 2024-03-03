@@ -10,7 +10,8 @@ public class Tank extends Polygon implements KeyListener{
 	private double increment, originalRotation;
 	private int degrees, keyL, keyF, keyR, keyB, keyS;
 	private boolean forwards, backwards, left, right;
-	private ArrayList<Canon> canon;
+	private ArrayList<Canon> canon, remove;
+	private Canon projectile;
 	
 	public Tank(Point[] inShape, Point inPosition, double inRotation, 
 			int keyL, int keyF, int keyR, int keyB, int keyS) {
@@ -35,6 +36,8 @@ public class Tank extends Polygon implements KeyListener{
 		this.right = false;
 
 		this.canon = new ArrayList<>(); 
+		this.remove = new ArrayList<>();
+
 	}
 	
 	public void paint(Graphics brush) {		
@@ -100,18 +103,18 @@ public class Tank extends Polygon implements KeyListener{
 					- Math.sin(Math.toRadians(rotation)) * increment);
 		}
 
-		ArrayList<Canon> remove = new ArrayList<>();
 		for (int i = 0; i < canon.size(); i++) {
-		    Canon projectile = canon.get(i);
-		    projectile.move();
-		    if (projectile.getPosition().getX() < 0 || 
-		    		projectile.getPosition().getX() > 800 ||
-		        projectile.getPosition().getY() < 0 || 
-		        projectile.getPosition().getY() > 600) {
-		        remove.add(projectile);
+		    this.projectile = canon.get(i);
+		    this.projectile.move();
+		    if (this.projectile.getPosition().getX() < 0 
+		    		|| this.projectile.getPosition().getX() > 800 
+		    		|| this.projectile.getPosition().getY() < 0 
+		    		|| this.projectile.getPosition().getY() > 600) {
+		    	
+		        this.remove.add(projectile);
 		    }
 		}
-		canon.removeAll(remove); 
+		this.canon.removeAll(remove); 
 	}
 	
 	private void shoot() {
@@ -122,6 +125,10 @@ public class Tank extends Polygon implements KeyListener{
 	
 	public ArrayList<Canon> getCanon() {
 		return this.canon;
+	}
+	
+	public ArrayList<Canon> getRemove() {
+		return this.remove;
 	}
 	
 	public void death(double x, double y) {
