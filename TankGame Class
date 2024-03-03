@@ -12,11 +12,13 @@ import java.awt.event.*;
 
 class TankGame extends Game {
 	static int counter = 0;
+	static int tank1Score = 0;
+	static int tank2Score = 0;
 	Tank tank1, tank2;
-	Point[] tank1Points;
-	Point a;
-	RandomPolygons randomSquares; // Omar 
-	Border gameBorder;
+	Point[] tank1Points, tank2Points;
+	Point a, b;
+	RandomPolygons randomSquares; 
+	Border border;
 	
 	public TankGame() {
 		super("YourGameName!",800,600);
@@ -36,18 +38,30 @@ class TankGame extends Game {
 		tank1Points[9] = new Point(30,20);
 		tank1Points[10] = new Point(30,30);
 		tank1Points[11] = new Point(0,30);
-		
 		a = new Point(185,285);
-	
- 		this.tank1 = new Tank(tank1Points, a, 0);
- 		
- 		this.randomSquares = new RandomPolygons(100, 10);
- 		
- 		this.gameBorder = new Border(800, 600, 10, Color.WHITE);
- 		
- 		
+		
+		tank2Points = new Point[12];
+		tank2Points[0] = new Point(0,0);
+		tank2Points[1] = new Point(30,0);
+		tank2Points[2] = new Point(30,10);
+		tank2Points[3] = new Point(35,10);
+		tank2Points[4] = new Point(35,20);
+		tank2Points[5] = new Point(10,20);
+		tank2Points[6] = new Point(10,10);
+		tank2Points[7] = new Point(35,10);
+		tank2Points[8] = new Point(35,20);
+		tank2Points[9] = new Point(30,20);
+		tank2Points[10] = new Point(30,30);
+		tank2Points[11] = new Point(0,30);
+		b = new Point(585,285);
+		
+ 		this.tank1 = new Tank(tank1Points, a, 0, 37, 38, 39, 40, 77);
+ 		this.tank2 = new Tank(tank2Points, b, 180, 65, 87, 68, 83, 81);
+ 		this.randomSquares = new RandomPolygons(100, 20);
+ 		this.border = new Border(800, 600, 10, Color.WHITE);
 		
 		this.addKeyListener(tank1);	
+		this.addKeyListener(tank2);
 	}
   
 	public void paint(Graphics brush) {
@@ -60,16 +74,32 @@ class TankGame extends Game {
     	counter++;
     	brush.setColor(Color.white);
     	brush.drawString("Counter is " + counter,10,10);
-    	randomSquares.paint(brush); // Omar
+    	
+    	if(tank1.collision(tank2.getCanon())) {
+    		tank1.death(185, 285);
+    		tank2.victory(585, 285);
+    		Score score2 = tank2 -> TankGame.tank2Score++;
+    	}
+    	
+    	if(tank2.collision(tank1.getCanon())) {
+    		tank1.victory(185, 285);
+    		tank2.death(585, 285);
+    		Score score1 = tank1 -> TankGame.tank1Score++;
+    	}
+    	
+    	brush.drawString("Player 1 Score: " + TankGame.tank1Score, 200, 10);
+    	brush.drawString("Player 2 Score: " + TankGame.tank2Score, 500, 10);
+
+		randomSquares.paint(brush);
+		border.paint(brush);
 		tank1.move();
+		tank2.move();
 		tank1.paint(brush);
-		gameBorder.paint(brush);
-		
-  }
-  
+		tank2.paint(brush);
+	}
+	
 	public static void main (String[] args) {
 		TankGame a = new TankGame();
    		a.repaint();
-   		
 	}
 }
