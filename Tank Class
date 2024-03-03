@@ -9,6 +9,8 @@ public class Tank extends Polygon implements KeyListener{
 	private double increment;
 	private int degrees;
 	private boolean forwards, backwards, left, right;
+
+	private ArrayList<Shooting> shooting; // Broski this is for shooitng
 	
 	public Tank(Point[] inShape, Point inPosition, double inRotation) {
 		super(inShape, inPosition, inRotation);
@@ -23,6 +25,8 @@ public class Tank extends Polygon implements KeyListener{
 		this.backwards = false;
 		this.left = false;
 		this.right = false;
+
+		shooting = new ArrayList<>();shooting = new ArrayList<>(); // for shooitng
 	}
 	
 	public void paint(Graphics brush) {		
@@ -31,6 +35,11 @@ public class Tank extends Polygon implements KeyListener{
 			this.x[i] = (int) this.getPoints()[i].getX();
 			this.y[i] = (int) this.getPoints()[i].getY();
 		}
+
+		for (int i = 0; i < shooting.size(); i++) {
+		    Shooting projectile = shooting.get(i);
+		    projectile.paint(brush);
+		} // for shooting
 		
 		brush.drawPolygon(this.x, this.y, 12);
 	}
@@ -82,6 +91,17 @@ public class Tank extends Polygon implements KeyListener{
 			super.position.setY(super.position.getY() 
 					- Math.sin(Math.toRadians(rotation)) * increment);
 		}
+
+		ArrayList<Shooting> remove = new ArrayList<>();
+		for (int i = 0; i < shooting.size(); i++) {
+		    Shooting projectile = shooting.get(i);
+		    projectile.move();
+		    if (projectile.getPosition().getX() < 0 || projectile.getPosition().getX() > 800 ||
+		        projectile.getPosition().getY() < 0 || projectile.getPosition().getY() > 600) {
+		        remove.add(projectile);
+		    }
+		}
+		shooting.removeAll(remove); // 95 to this is for shooting
 	}
 
 	@Override
@@ -94,6 +114,8 @@ public class Tank extends Polygon implements KeyListener{
 			this.right = true;
 		} else if(e.getKeyCode() == 40) {
 			this.backwards = true;
+		} else if (e.getKeyCode() == KeyEvent.VK_B) { //shooitng
+			shoot();
 		}		
 	}
 
@@ -109,6 +131,11 @@ public class Tank extends Polygon implements KeyListener{
 			this.backwards = false;
 		}
 	}	
+
+	private void shoot() {
+	    Shooting newProjectile = new Shooting(new Point(super.position.getX(), super.position.getY()), super.rotation, 5);
+	    shooting.add(newProjectile);
+	} // shooting
 	
 	@Override
 	public void keyTyped(KeyEvent e) {}
