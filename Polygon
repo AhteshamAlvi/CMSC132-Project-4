@@ -76,18 +76,30 @@ class Polygon {
   
   public void rotate(int degrees) {rotation = (rotation+degrees)%360;}
   
-	public boolean collision(Polygon other) {
-		  for(int i = 0; i < other.getPoints().length; i++) {
+	public boolean tankObstacleCollision(Polygon other) {
+		for(int i = 0; i < other.getPoints().length; i++) {
 			if(this.contains(other.getPoints()[i])) {
-			  return true;
-		     }
-		  }
+				return true;
+			}
+		}
 		return false;
 	}
 	
-	public boolean collision(ArrayList<Canon> bullet) {
+	public void obstacleBulletCollision(Tank tank, 
+			ArrayList<Polygon> polygons, ArrayList<Canon> bullet) {
+		for(int i = 0; i < polygons.size(); i++) {
+			for(int j = 0; j < bullet.size(); j++) {
+				if(polygons.get(i).contains(bullet.get(j).getPosition())) {
+					tank.getCanon().remove(bullet.get(j));
+				}
+			}
+		}
+	}
+	
+	public boolean tankBulletCollision(Tank tank, ArrayList<Canon> bullet) {
 		for(int i = 0; i < bullet.size(); i++) {
 			if(this.contains(bullet.get(i).getPosition())) {
+				tank.getCanon().removeAll(bullet);
 				return true;
 			}
 		}
