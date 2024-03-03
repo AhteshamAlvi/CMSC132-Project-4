@@ -1,0 +1,29 @@
+package game;
+
+import java.awt.Graphics;
+
+public class Canon {
+	private Point position;
+    private double direction;
+    private double speed;
+
+    public Canon (Point startPosition, double direction, double speed) {
+        this.position = startPosition;
+        this.direction = direction;
+        this.speed = speed;
+    }
+    
+    public void move() {
+        position.setX(position.getX() + Math.cos(Math.toRadians(direction)) * speed);
+        position.setY(position.getY() + Math.sin(Math.toRadians(direction)) * speed);
+    }
+
+    public void paint(Graphics brush) {
+        brush.fillOval((int)position.getX(), (int)position.getY(), 10, 10);
+    }
+
+    public Point getPosition() {
+        return this.position;
+    }
+}
+	    
