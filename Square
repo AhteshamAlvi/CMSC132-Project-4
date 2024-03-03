@@ -5,7 +5,7 @@ import java.awt.Graphics;
 import java.util.ArrayList;
 import java.util.Random;
 
-public class RandomSquares {
+public class RandomSquares{
     private ArrayList<Point> positions; 
     private int numberOfSquares;
     private int squareSize;
@@ -21,23 +21,21 @@ public class RandomSquares {
     }
 
     private void generateSquares() {
-
-    	  for (int i = 0; i < numberOfSquares; i++) {
-    	        while(true) {
-    	            int x = random.nextInt(800 - squareSize);
-    	            int y = random.nextInt(600 - squareSize);
-    	            
-    	            
-    	            if (!isOverlapping(x, y, 185, 285) && !isOverlapping(x, y, 585, 285)) {
-    	                positions.add(new Point(x, y));
-    	                break; // Break the loop if the square is not overlapping
-    	            }
+    	int topBorderHeight = 30;
+    	for (int i = 0; i < numberOfSquares; i++) {
+    		while(true) {
+    			int x = random.nextInt(800 - squareSize);
+    	        int y = random.nextInt(600 - squareSize - topBorderHeight) + topBorderHeight;
+    	        if (!isOverlapping(x, y, 185, 285) && !isOverlapping(x, y, 585, 285)) {
+    	        	positions.add(new Point(x, y));
+    	            break; // Break the loop if the square is not overlapping
     	        }
     	    }
+    	}
     }
     
     private boolean isOverlapping(int squareX, int squareY, int pointX, int pointY) {
-    	 int buffer = 50; 
+    	 int buffer = 50; // Buffer in pixels
     	    int expandedX1 = pointX - buffer;
     	    int expandedY1 = pointY - buffer;
     	    int expandedX2 = pointX + buffer;
@@ -50,3 +48,4 @@ public class RandomSquares {
             brush.fillRect((int)position.getX(), (int)position.getY(), squareSize, squareSize);
         }
     }
+}
