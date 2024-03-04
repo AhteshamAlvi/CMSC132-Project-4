@@ -1,5 +1,6 @@
 package game;
-
+// this is an interface 
+// we use this to display the winning screen
 public interface Victory {
 	
 	public void victoryScreen(String winner);
