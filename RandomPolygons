@@ -5,28 +5,32 @@ import java.awt.Graphics;
 import java.util.ArrayList;
 import java.util.Random;
 
+// a class that generates random polygons
 public class RandomPolygons {
-    private static ArrayList<Polygon> polygons;
-    private int numberOfPolygons, polygonSize, topBorderHeight;
-    private Random random;
-    private Border border;
-    private Squares squares;
-    private Triangles triangles;
+    private static ArrayList<Polygon> polygons; // Stores all polygons including borders, squares, and triangles
+    private int numberOfPolygons, polygonSize, topBorderHeight;  
+    private Random random; // Random number generator for polygon placement
+    private Border border; // Inner class instance for border
+    private Squares squares; // // Inner class instance for square 
+    private Triangles triangles; // Inner class instance for triangle
     
+    // Constructor initializes the object with specified number and size of polygons
     public RandomPolygons(int numberOfPolygons, int polygonSize) {
         this.numberOfPolygons = numberOfPolygons;
         this.polygonSize = polygonSize;
-        this.topBorderHeight = 30;
+        this.topBorderHeight = 30; //// Fixed height for the top border to avoid overlap
         
         polygons = new ArrayList<>();
         
-        random = new Random();
+        random = new Random(); // Initialize random generator
         
+        // Instantiate inner classes for generating specific polygon 
         border = new Border();
         squares = new Squares();
         triangles = new Triangles();
     }
     
+    // This checks to see if a given point overlaps with any points sich as border and where the tank spawns
     private boolean isOverlapping(int squareX, int squareY, int pointX, int pointY) {
         int buffer = 50; // Buffer in pixels
         int expandedX1 = pointX - buffer;
@@ -36,6 +40,7 @@ public class RandomPolygons {
         return !(squareX + polygonSize < expandedX1 || squareX > expandedX2 || squareY + polygonSize < expandedY1 || squareY > expandedY2);
     }
     
+    // this is an innter class that generates borders
     private class Border {
     	public Border() {
 	    	Point[] topBorder = {
@@ -73,6 +78,7 @@ public class RandomPolygons {
         }
     }
     
+    // Inner class for generate square polygons
     private class Squares {
     	public Squares() {
 			for (int i = 0; i < numberOfPolygons; i++) {
@@ -94,6 +100,7 @@ public class RandomPolygons {
     	}
     }
     
+    // Inner class for genearting triangle polygons
     private class Triangles {
     	public Triangles() {
           for (int i = 0; i < numberOfPolygons; i++) {
@@ -114,6 +121,7 @@ public class RandomPolygons {
     	}
     }    	
 
+    // return the list the polygons that were creataed
     public static ArrayList<Polygon> getPolygons() {
 			return polygons;
     }
@@ -129,7 +137,8 @@ public class RandomPolygons {
 	public Squares getSquares() {
 		return squares;
 	}
-
+	
+	// Iterates through all polygons, making their points to arrays for drawing
     public void paint(Graphics brush) {
         for (Polygon polygon : polygons) {
             Point[] points = polygon.getPoints();
