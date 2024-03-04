@@ -12,11 +12,11 @@ import java.awt.event.*;
 
 class TankGame extends Game {
 	static int counter = 0;
-	static int tank1Score = 0;
-	static int tank2Score = 0;
+	int p1Score, p2Score;
 	Tank tank1, tank2;
 	Point a, b;
 	RandomPolygons randomPolygons; 
+	Score p1ScoreLambda, p2ScoreLambda;
 	
 	public TankGame() {
 		super("YourGameName!",800,600);
@@ -43,7 +43,10 @@ class TankGame extends Game {
  		this.tank2 = new Tank(tank2Points, b, 180, 65, 87, 68, 83, 81);
  		
  		this.randomPolygons = new RandomPolygons(15, 30);
-		
+ 		
+ 		p1ScoreLambda = tank1Score -> tank1Score += 1;
+ 		p2ScoreLambda = tank2Score -> tank2Score += 1;
+ 			
 		this.addKeyListener(tank1);	
 		this.addKeyListener(tank2);
 	}
@@ -62,13 +65,13 @@ class TankGame extends Game {
     	if(tank1.tankBulletCollision(tank2, tank2.getCanon())) {
     		tank1.death(185, 285);
     		tank2.victory(585, 285);
-    		TankGame.tank2Score++;
+    		p2Score = p2ScoreLambda.increaseScore(0);
     	}
     	
     	if(tank2.tankBulletCollision(tank1, tank1.getCanon())) {
     		tank1.victory(185, 285);
     		tank2.death(585, 285);
-    		TankGame.tank1Score++;
+    		p1Score = p1ScoreLambda.increaseScore(0);
     	}
     	
     	tank1.obstacleBulletCollision(tank1, RandomPolygons.getPolygons(), 
@@ -76,8 +79,8 @@ class TankGame extends Game {
      	tank2.obstacleBulletCollision(tank2, RandomPolygons.getPolygons(), 
     			tank2.getCanon());
     	
-    	brush.drawString("Player 1 Score: " + TankGame.tank1Score, 200, 15);
-    	brush.drawString("Player 2 Score: " + TankGame.tank2Score, 500, 15);
+    	brush.drawString("Player 1 Score: " + p1Score, 200, 15);
+    	brush.drawString("Player 2 Score: " + p2Score, 500, 15);
 
 		randomPolygons.paint(brush);
 		tank1.move();
