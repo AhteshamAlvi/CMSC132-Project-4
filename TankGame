@@ -7,39 +7,29 @@ NOTE: This class is the metaphorical "main method" of your program,
       it is your control center.
 
 */
-
-
 import java.awt.*;
 import java.awt.event.*;
 
 class TankGame extends Game {
-	// create a counter that is used for score 
-	// sets each score for the tanks
 	static int counter = 0;
-	int p1Score,p2Score;
-	// creates tank objects for the two platers
+	int p1Score, p2Score;
 	Tank tank1, tank2;
-	// starting points for the tanks
 	Point a, b;
-	// polygons that are on the map
 	RandomPolygons randomPolygons; 
 	Score p1ScoreLambda, p2ScoreLambda;
-	
+	Victory anonymousVictor;
 	
 	public TankGame() {
-		// coonstructor which initalizes the game, tanks, and the elements
 		super("YourGameName!",800,600);
 		this.setFocusable(true);
 		this.requestFocus();
 		
-		// defines the tank shapes 
 		Point[] tank1Points = {
 				new Point(0,0), new Point(30,0), new Point(30,10), 
 				new Point(35,10), new Point(35,20), new Point(10,20), 
 				new Point(10,10), new Point(35,10), new Point(35,20), 
 				new Point(30,20), new Point(30,30), new Point(0,30),
 			};
-		// staring point for the tank
 		a = new Point(185,285);
 		
 		Point[] tank2Points = {
@@ -50,45 +40,39 @@ class TankGame extends Game {
 			};
 		b = new Point(585,285);
 		
-		// initilaizes the tank with the shape and the controls it uses
  		this.tank1 = new Tank(tank1Points, a, 0, 37, 38, 39, 40, 77);
  		this.tank2 = new Tank(tank2Points, b, 180, 65, 87, 68, 83, 81);
  		
  		this.randomPolygons = new RandomPolygons(15, 30);
  		
- 		
- 		// our lambda
- 		p1ScoreLambda = tank1Score -> tank1Score += 1;
- 		p2ScoreLambda = tank2Score -> tank2Score += 1;
-		
+ 		this.p1ScoreLambda = tank1Score -> tank1Score + 1;
+ 		this.p2ScoreLambda = tank2Score -> tank2Score + 1;
+ 			
 		this.addKeyListener(tank1);	
 		this.addKeyListener(tank2);
 	}
-	
-	
-	// paint method that draw the game to the screen
+  
 	public void paint(Graphics brush) {
     	brush.setColor(Color.black);
     	brush.fillRect(0,0,width,height);
     	
-    	
+    	// sample code for printing message for debugging
+    	// counter is incremented and this message printed
+    	// each time the canvas is repainted
     	counter++;
     	brush.setColor(Color.white);
     	brush.drawString("Counter is " + counter,10,15);
     	
-    	// This checks and handles if there is a colliosn
-    	// it also will update the the score
     	if(tank1.tankBulletCollision(tank2, tank2.getCanon())) {
     		tank1.death(185, 285);
     		tank2.victory(585, 285);
-    		p2Score = p2ScoreLambda.increaseScore(0);
+    		p2Score = p2ScoreLambda.increaseScore(p2Score);
     	}
-    	
     	
     	if(tank2.tankBulletCollision(tank1, tank1.getCanon())) {
     		tank1.victory(185, 285);
     		tank2.death(585, 285);
-    		p1Score = p1ScoreLambda.increaseScore(0);
+    		p1Score = p1ScoreLambda.increaseScore(p1Score);
     	}
     	
     	tank1.obstacleBulletCollision(tank1, RandomPolygons.getPolygons(), 
@@ -96,19 +80,35 @@ class TankGame extends Game {
      	tank2.obstacleBulletCollision(tank2, RandomPolygons.getPolygons(), 
     			tank2.getCanon());
     	
-     	// draw the game elements to the screen
-    	brush.drawString("Player 1 Score: " + p1Score, 200, 15);
-    	brush.drawString("Player 2 Score: " + p2Score, 500, 15);
+    	brush.drawString("Player 1 Score: " + this.p1Score, 200, 15);
+    	brush.drawString("Player 2 Score: " + this.p2Score, 500, 15);
 
-		randomPolygons.paint(brush);
-		tank1.move(); // moves the tank1
-		tank2.move(); // moves the tank2
-		tank1.paint(brush); // draws tank1
-		tank2.paint(brush); // draws tank2
-	}
+    	if (this.p1Score >= 5 || this.p2Score >= 5) {
+    		this.anonymousVictor = new Victory() {
+     			public void victoryScreen(String winner) {
+     		    	brush.setColor(Color.white);
+     				brush.fillRect(0, 0, 800, 600);
+     				brush.setColor(Color.black);
+     		    	brush.drawString(winner, 350, 300);
+     			}
+     		};
+    	}
+    	
+    	if(this.p1Score >= 5) {
+    		this.anonymousVictor.victoryScreen("Player 1 Wins!");
+    		
+    	} else if(this.p2Score >= 5) {
+    		this.anonymousVictor.victoryScreen("Player 2 Wins!");
+    		
+    	} else {
+    		randomPolygons.paint(brush);
+    		tank1.move();
+    		tank2.move();
+    		tank1.paint(brush);
+    		tank2.paint(brush);
+    	}
+    }
 	
-	
-	// Main method to start the game
 	public static void main (String[] args) {
 		TankGame a = new TankGame();
    		a.repaint();
