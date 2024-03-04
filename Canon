@@ -2,28 +2,45 @@ package game;
 
 import java.awt.Graphics;
 
+/*
+CLASS: Canon
+DESCRIPTION: The canon class represents a cannon for our tank. When it is in use, the tank will shoot a circle. This class handles the cannon's position, direction, and speed,
+and is rendered on the screen when its shot
+USAGE: Used in the tank game class, we made it so key S and Q are the keys to shoot
+*/
+
 public class Canon {
-	private Point position;
-    private double direction;
-    private double speed;
+ 	// The direction of the cannon in degrees
+	// The current position of the cannon
+	// The speed of the cannon's movement
+	 private Point position;
+	    private double direction;
+	    private double speed;
 
-    public Canon (Point startPosition, double direction, double speed) {
-        this.position = startPosition;
-        this.direction = direction;
-        this.speed = speed;
-    }
-    
-    public void move() {
-        position.setX(position.getX() + Math.cos(Math.toRadians(direction)) * speed);
-        position.setY(position.getY() + Math.sin(Math.toRadians(direction)) * speed);
-    }
+	    public Canon (Point startPosition, double direction, double speed) {
+	    	// Constructs a new canon object with the a certian starting position, direction, and speed
+	        this.position = startPosition;
+	        this.direction = direction;
+	        this.speed = speed;
+	    }
+	    
+	    public void move() {
+	        //Moves the cannon based on its current direction and speed
+	        position.setX(position.getX() + Math.cos(Math.toRadians(direction)) * speed);
+	        position.setY(position.getY() + Math.sin(Math.toRadians(direction)) * speed);
+	    }
 
-    public void paint(Graphics brush) {
-        brush.fillOval((int)position.getX(), (int)position.getY(), 10, 10);
-    }
+	    public void paint(Graphics brush) {
+	    	//this paints the actauly canon that is shot to the screen
+	        brush.fillOval((int)position.getX(), (int)position.getY(), 10, 10);
+	    }
 
-    public Point getPosition() {
-        return this.position;
-    }
+	    public Point getPosition() {
+	    	// this returns the positon of the cannon 
+	        return this.position;
+	    }
 }
 	    
+
+
+
