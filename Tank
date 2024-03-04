@@ -7,7 +7,7 @@ import java.util.ArrayList;
 
 public class Tank extends Polygon implements KeyListener{
 	private int[] x,y;
-	private double increment, originalRotation;
+	private double increment, originalRotation, obs;
 	private int degrees, keyL, keyF, keyR, keyB, keyS;
 	private boolean forwards, backwards, left, right;
 	private ArrayList<Canon> canon, remove;
@@ -22,6 +22,7 @@ public class Tank extends Polygon implements KeyListener{
 		
 		this.increment = 2;
 		this.degrees = 2;
+		this.obs = .05;
 		this.originalRotation = inRotation;
 		
 		this.keyL = keyL;
@@ -56,7 +57,59 @@ public class Tank extends Polygon implements KeyListener{
 	}
 	
 	public void move() {
-		if(this.left && this.forwards) {
+		if(this.left && this.forwards 
+				&& (this.tankObstacleCollision(RandomPolygons.getPolygons())
+				|| obstacleTankCollision(this,RandomPolygons.getPolygons()))) {
+			this.rotate(-this.degrees);
+			super.position.setX(super.position.getX() 
+					+ Math.cos(Math.toRadians(rotation)) * increment * obs);
+			super.position.setY(super.position.getY() 
+					+ Math.sin(Math.toRadians(rotation)) * increment * obs);
+			
+		} else if(this.right && this.forwards 
+				&& (this.tankObstacleCollision(RandomPolygons.getPolygons())
+				|| obstacleTankCollision(this,RandomPolygons.getPolygons()))) {
+			this.rotate(this.degrees);
+			super.position.setX(super.position.getX() 
+					+ Math.cos(Math.toRadians(rotation)) * increment * obs);
+			super.position.setY(super.position.getY()
+					+ Math.sin(Math.toRadians(rotation)) * increment * obs);
+		
+		} else if(this.left && this.backwards 
+				&& (this.tankObstacleCollision(RandomPolygons.getPolygons())
+				|| obstacleTankCollision(this,RandomPolygons.getPolygons()))) {
+			this.rotate(-this.degrees);
+			super.position.setX(super.position.getX() 
+					- Math.cos(Math.toRadians(rotation)) * increment * obs);
+			super.position.setY(super.position.getY() 
+					- Math.sin(Math.toRadians(rotation)) * increment * obs);
+
+		} else if(this.right && this.backwards 
+				&& (this.tankObstacleCollision(RandomPolygons.getPolygons())
+				|| obstacleTankCollision(this,RandomPolygons.getPolygons()))) {
+			this.rotate(this.degrees);
+			super.position.setX(super.position.getX() 
+					- Math.cos(Math.toRadians(rotation)) * increment * obs);
+			super.position.setY(super.position.getY() 
+					- Math.sin(Math.toRadians(rotation)) * increment * obs);
+		
+		} else if(this.forwards
+				&& (this.tankObstacleCollision(RandomPolygons.getPolygons())
+				|| obstacleTankCollision(this,RandomPolygons.getPolygons()))) {
+			super.position.setX(super.position.getX() 
+					+ Math.cos(Math.toRadians(rotation)) * increment * obs);
+			super.position.setY(super.position.getY() 
+					+ Math.sin(Math.toRadians(rotation)) * increment * obs);
+			
+		} else if(this.backwards
+				&& (this.tankObstacleCollision(RandomPolygons.getPolygons())
+				|| obstacleTankCollision(this,RandomPolygons.getPolygons()))) {
+			super.position.setX(super.position.getX() 
+					- Math.cos(Math.toRadians(rotation)) * increment * obs);
+			super.position.setY(super.position.getY() 
+					- Math.sin(Math.toRadians(rotation)) * increment * obs);
+			
+		} else if(this.left && this.forwards) {
 			this.rotate(-this.degrees);
 			super.position.setX(super.position.getX() 
 					+ Math.cos(Math.toRadians(rotation)) * increment);
