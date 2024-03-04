@@ -1,18 +1,24 @@
 package game;
-
+//Omar and Ahtsham
 import java.awt.Graphics;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.ArrayList;
 
+// this is a class that is for the tank. It makes the tank shoot and move
+
 public class Tank extends Polygon implements KeyListener{
-	private int[] x,y;
-	private double increment, originalRotation, obs;
-	private int degrees, keyL, keyF, keyR, keyB, keyS;
+	private int[] x,y; // arrays to hold x and y cooridnates of the tank shape
+	private double increment, originalRotation, obs; // increments movement and rotation
+	private int degrees, keyL, keyF, keyR, keyB, keyS; // key for rotations
 	private boolean forwards, backwards, left, right;
 	private ArrayList<Canon> canon, remove;
 	private Canon projectile;
 	
+	
+	// initializes the tank and everyhting it has
+	// also sets up the movmenet and rotation
+	// sets up the key controls in this class
 	public Tank(Point[] inShape, Point inPosition, double inRotation, 
 			int keyL, int keyF, int keyR, int keyB, int keyS) {
 		super(inShape, inPosition, inRotation);
@@ -41,22 +47,25 @@ public class Tank extends Polygon implements KeyListener{
 
 	}
 	
+	  // Draws the tank and its projectiles on the screen
 	public void paint(Graphics brush) {		
 		
 		for(int i = 0; i < this.getPoints().length; i++) {
 			this.x[i] = (int) this.getPoints()[i].getX();
 			this.y[i] = (int) this.getPoints()[i].getY();
 		}
-
+		// Draw each projectile in the canon list
 		for (int i = 0; i < canon.size(); i++) {
 		    Canon projectile = canon.get(i);
 		    projectile.paint(brush);
 		} 
-		
+		// draws the tank as a polygon
 		brush.drawPolygon(this.x, this.y, 12);
 	}
 	
+	 // Updates the tank's position and handles shooting
 	public void move() {
+		// Check movement flags and adjust tank's position and rotation accordingly
 		if(this.left && this.forwards 
 				&& (this.tankObstacleCollision(RandomPolygons.getPolygons())
 				|| obstacleTankCollision(this,RandomPolygons.getPolygons()))) {
@@ -155,7 +164,8 @@ public class Tank extends Polygon implements KeyListener{
 			super.position.setY(super.position.getY() 
 					- Math.sin(Math.toRadians(rotation)) * increment);
 		}
-
+		
+		// Move projectiles and remove them if they go out of bounds
 		for (int i = 0; i < canon.size(); i++) {
 		    this.projectile = canon.get(i);
 		    this.projectile.move();
@@ -170,7 +180,9 @@ public class Tank extends Polygon implements KeyListener{
 		this.canon.removeAll(remove); 
 	}
 	
+	// Creates a new projectile and adds it to the canon list
 	private void shoot() {
+		// Create new projectile at the tank's position and rotation
 	    Canon newProjectile = new Canon(new Point(super.position.getX(), 
 	    		super.position.getY()), super.rotation, 5);
 	    canon.add(newProjectile);
@@ -184,18 +196,21 @@ public class Tank extends Polygon implements KeyListener{
 		return this.remove;
 	}
 	
+	// Resets the tank's position and rotation to its original state before it died
 	public void death(double x, double y) {
 		super.position.setX(x);
 		super.position.setY(y);
 		super.rotation = originalRotation;
 	}
 	
+	// Resets the tank's position and rotation to its original state before it's victory
 	public void victory(double x, double y) {
 		super.position.setX(x);
 		super.position.setY(y);
 		super.rotation = originalRotation;
 	}
 
+	// Handles key press events to control the tank's movement and shooting
 	@Override
 	public void keyPressed(KeyEvent e) {
 		if(e.getKeyCode() == this.keyL) {
@@ -211,6 +226,7 @@ public class Tank extends Polygon implements KeyListener{
 		}
 	}
 
+	// Handles key releases events so the tank can stop moving
 	@Override
 	public void keyReleased(KeyEvent e) {
 		if(e.getKeyCode() == this.keyL) {
