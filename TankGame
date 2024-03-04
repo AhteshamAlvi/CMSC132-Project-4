@@ -42,7 +42,7 @@ class TankGame extends Game {
  		this.tank1 = new Tank(tank1Points, a, 0, 37, 38, 39, 40, 77);
  		this.tank2 = new Tank(tank2Points, b, 180, 65, 87, 68, 83, 81);
  		
- 		this.randomPolygons = new RandomPolygons(100, 20);
+ 		this.randomPolygons = new RandomPolygons(50, 25);
  		this.randomPolygons.generateBorder();
  		this.randomPolygons.generateSquares();
 		
