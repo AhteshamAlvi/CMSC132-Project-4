@@ -76,10 +76,24 @@ class Polygon {
   
   public void rotate(int degrees) {rotation = (rotation+degrees)%360;}
   
-	public boolean tankObstacleCollision(Polygon other) {
-		for(int i = 0; i < other.getPoints().length; i++) {
-			if(this.contains(other.getPoints()[i])) {
-				return true;
+	public boolean tankObstacleCollision(ArrayList<Polygon> polygons) {
+		for(int i = 0; i < polygons.size(); i++) {
+			for(int j = 0; j < polygons.get(i).getPoints().length; j++) {
+				if(this.contains(polygons.get(i).getPoints()[j])) {
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+	
+	public boolean obstacleTankCollision(Tank tank, 
+			ArrayList<Polygon> polygons) {
+		for(int i = 0; i < polygons.size(); i++) {
+			for(int j = 0; j < tank.getPoints().length; j++) {
+				if(polygons.get(i).contains(tank.getPoints()[j])) {
+					return true;
+				}
 			}
 		}
 		return false;
