@@ -101,6 +101,8 @@ class TankGame extends Game {
     	brush.drawString("Player 1 Score: " + this.p1Score, 200, 15);
     	brush.drawString("Player 2 Score: " + this.p2Score, 500, 15);
 
+	// if any player reaches the score of 5 a new screen will appear
+	// the screen will then produce a string which tells you the winner
     	if (this.p1Score >= 5 || this.p2Score >= 5) {
     		this.anonymousVictor = new Victory() {
      			public void victoryScreen(String winner) {
