@@ -1,6 +1,6 @@
 package game;
-
+// Omar and Athesham
 public interface Score {
-	
+	// this just increases the score of the game. It upadates for each tank, and will update if a tank is destroyed. 
 	public int increaseScore(int score);
 }
