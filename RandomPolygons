@@ -1,80 +1,148 @@
+//package game;
+//
+//import java.awt.Color;
+//import java.awt.Graphics;
+//import java.util.ArrayList;
+//import java.util.Random;
+//
+//public class RandomPolygons {
+//    private static ArrayList<Polygon> polygons;
+//    private int numberOfPolygons; 
+//    private int polygonSize;
+//    private Random random;
+//    
+//    public RandomPolygons(int numberOfPolygons, int polygonSize) {
+//        this.numberOfPolygons = numberOfPolygons;
+//        this.polygonSize = polygonSize;
+//        polygons = new ArrayList<>();
+//        random = new Random();
+//    }
+//    
+//    public void generateBorder() {
+//    	Point[] topBorder = {
+//        		new Point(0,20),
+//        		new Point(800,20),
+//        		new Point(800,30),
+//        		new Point(0,30)
+//        };
+//   
+//        Point[] bottomBorder = {
+//        		new Point(0,562),
+//        		new Point(800,562),
+//        		new Point(800,572),
+//        		new Point(0,572)
+//        };
+//        
+//        Point[] leftBorder = {
+//        		new Point(0,20),
+//        		new Point(10,20),
+//        		new Point(10,562),
+//        		new Point(0,562)
+//        };
+//        
+//        Point[] rightBorder = {
+//        		new Point(790,20),
+//        		new Point(800,20),
+//        		new Point(800,562),
+//        		new Point(790,562)
+//        };
+//        
+//        polygons.add(new Polygon(topBorder, new Point(200, 25), 0));
+//        polygons.add(new Polygon(bottomBorder, new Point(200, 567), 0));
+//        polygons.add(new Polygon(leftBorder, new Point(0, 160), 0));
+//        polygons.add(new Polygon(rightBorder, new Point(795, 160), 0));
+//    }
+//
+//    public void generateSquares() {
+//        int topBorderHeight = 30;
+//        for (int i = 0; i < numberOfPolygons; i++) {
+//            while (true) {
+//                int x = random.nextInt(800 - polygonSize);
+//                int y = random.nextInt(600 - polygonSize - topBorderHeight) + topBorderHeight;
+//                if (!isOverlapping(x, y, 185, 285) && !isOverlapping(x, y, 585, 285)) {
+//                    Point[] squareShape = {
+//                        new Point(x, y),
+//                        new Point(x + polygonSize, y),
+//                        new Point(x + polygonSize, y + polygonSize),
+//                        new Point(x, y + polygonSize)
+//                    };
+//                    polygons.add(new Polygon(squareShape, new Point(x, y), 0));
+//                    break;
+//                }
+//            }
+//        }
+//    }
+//    
+//    public void generateTriangles() {
+//        int topBorderHeight = 30;
+//        for (int i = 0; i < numberOfPolygons; i++) {
+//            while (true) {
+//                int x = random.nextInt(800 - polygonSize);
+//                int y = random.nextInt(600 - polygonSize - topBorderHeight) + topBorderHeight;
+//                if (!isOverlapping(x, y, 185, 285) && !isOverlapping(x, y, 585, 285)) {
+//                    Point[] triangleShape = {
+//                        new Point(x, y),
+//                        new Point(x + polygonSize / 2, y + polygonSize),
+//                        new Point(x + polygonSize, y)
+//                    };
+//                    polygons.add(new Polygon(triangleShape, new Point(x, y), 0));
+//                    break;
+//                }
+//            }
+//        }
+//    }
+//        
+//    public static ArrayList<Polygon> getPolygons() {
+//			return polygons;
+//    }
+//
+//    private boolean isOverlapping(int squareX, int squareY, int pointX, int pointY) {
+//        int buffer = 50; // Buffer in pixels
+//        int expandedX1 = pointX - buffer;
+//        int expandedY1 = pointY - buffer;
+//        int expandedX2 = pointX + buffer;
+//        int expandedY2 = pointY + buffer;
+//        return !(squareX + polygonSize < expandedX1 || squareX > expandedX2 || squareY + polygonSize < expandedY1 || squareY > expandedY2);
+//    }
+//
+//    public void paint(Graphics brush) {
+//        for (Polygon polygon : polygons) {
+//            Point[] points = polygon.getPoints();
+//            int[] xPoints = new int[points.length];
+//            int[] yPoints = new int[points.length];
+//            for (int i = 0; i < points.length; i++) {
+//                xPoints[i] = (int) points[i].x;
+//                yPoints[i] = (int) points[i].y;
+//            }
+//            brush.fillPolygon(xPoints, yPoints, points.length);
+//        }
+//    }
+//}
+
 package game;
 
-import java.awt.Color;
 import java.awt.Graphics;
 import java.util.ArrayList;
 import java.util.Random;
 
 public class RandomPolygons {
     private static ArrayList<Polygon> polygons;
-    private int numberOfPolygons; 
+    private int numberOfPolygons;
     private int polygonSize;
     private Random random;
-    
+
     public RandomPolygons(int numberOfPolygons, int polygonSize) {
         this.numberOfPolygons = numberOfPolygons;
         this.polygonSize = polygonSize;
         polygons = new ArrayList<>();
         random = new Random();
-    }
-    
-    public void generateBorder() {
-    	Point[] topBorder = {
-        		new Point(0,20),
-        		new Point(800,20),
-        		new Point(800,30),
-        		new Point(0,30)
-        };
-   
-        Point[] bottomBorder = {
-        		new Point(0,562),
-        		new Point(800,562),
-        		new Point(800,572),
-        		new Point(0,572)
-        };
-        
-        Point[] leftBorder = {
-        		new Point(0,20),
-        		new Point(10,20),
-        		new Point(10,562),
-        		new Point(0,562)
-        };
-        
-        Point[] rightBorder = {
-        		new Point(790,20),
-        		new Point(800,20),
-        		new Point(800,562),
-        		new Point(790,562)
-        };
-        
-        polygons.add(new Polygon(topBorder, new Point(200, 25), 0));
-        polygons.add(new Polygon(bottomBorder, new Point(200, 567), 0));
-        polygons.add(new Polygon(leftBorder, new Point(0, 160), 0));
-        polygons.add(new Polygon(rightBorder, new Point(795, 160), 0));
+        new BorderGenerator().generate();
+        new SquareGenerator().generate();
+        new TriangleGenerator().generate();
     }
 
-    public void generateSquares() {
-        int topBorderHeight = 30;
-        for (int i = 0; i < numberOfPolygons; i++) {
-            while (true) {
-                int x = random.nextInt(800 - polygonSize);
-                int y = random.nextInt(600 - polygonSize - topBorderHeight) + topBorderHeight;
-                if (!isOverlapping(x, y, 185, 285) && !isOverlapping(x, y, 585, 285)) {
-                    Point[] squareShape = {
-                        new Point(x, y),
-                        new Point(x + polygonSize, y),
-                        new Point(x + polygonSize, y + polygonSize),
-                        new Point(x, y + polygonSize)
-                    };
-                    polygons.add(new Polygon(squareShape, new Point(x, y), 0));
-                    break;
-                }
-            }
-        }
-    }
-        
     public static ArrayList<Polygon> getPolygons() {
-			return polygons;
+        return polygons;
     }
 
     private boolean isOverlapping(int squareX, int squareY, int pointX, int pointY) {
@@ -88,14 +156,127 @@ public class RandomPolygons {
 
     public void paint(Graphics brush) {
         for (Polygon polygon : polygons) {
-            Point[] points = polygon.getPoints();
-            int[] xPoints = new int[points.length];
-            int[] yPoints = new int[points.length];
-            for (int i = 0; i < points.length; i++) {
-                xPoints[i] = (int) points[i].x;
-                yPoints[i] = (int) points[i].y;
+            polygon.paint(brush);
+        }
+    }
+
+    // Inner class for Polygon
+    public static class Polygon {
+        private Point[] points;
+        private Point origin;
+        private int rotation; // Assuming rotation is an angle or similar property
+
+        public Polygon(Point[] points, Point origin, int rotation) {
+            this.points = points;
+            this.origin = origin;
+            this.rotation = rotation;
+        }
+
+        public Point[] getPoints() {
+            return points;
+        }
+
+        public void paint(Graphics brush) {
+            int[] xPoints = new int[this.points.length];
+            int[] yPoints = new int[this.points.length];
+            for (int i = 0; i < this.points.length; i++) {
+                xPoints[i] = (int) this.points[i].x;
+                yPoints[i] = (int) this.points[i].y;
             }
-            brush.fillPolygon(xPoints, yPoints, points.length);
+            brush.fillPolygon(xPoints, yPoints, this.points.length);
+        }
+    }
+
+    // Inner class for Point
+    public static class Point {
+        double x, y;
+
+        public Point(double x, double y) {
+            this.x = x;
+            this.y = y;
+        }
+    }
+
+    // Inner class to generate borders
+    public class BorderGenerator {
+        public void generate() {
+            Point[] topBorder = {
+                    new Point(0, 20),
+                    new Point(800, 20),
+                    new Point(800, 30),
+                    new Point(0, 30)
+            };
+
+            Point[] bottomBorder = {
+                    new Point(0, 562),
+                    new Point(800, 562),
+                    new Point(800, 572),
+                    new Point(0, 572)
+            };
+
+            Point[] leftBorder = {
+                    new Point(0, 20),
+                    new Point(10, 20),
+                    new Point(10, 562),
+                    new Point(0, 562)
+            };
+
+            Point[] rightBorder = {
+                    new Point(790, 20),
+                    new Point(800, 20),
+                    new Point(800, 562),
+                    new Point(790, 562)
+            };
+
+            polygons.add(new Polygon(topBorder, new Point(200, 25), 0));
+            polygons.add(new Polygon(bottomBorder, new Point(200, 567), 0));
+            polygons.add(new Polygon(leftBorder, new Point(5, 291), 0));
+            polygons.add(new Polygon(rightBorder, new Point(795, 291), 0));
+        }
+    }
+
+    // Inner class to generate squares
+    public class SquareGenerator {
+        public void generate() {
+            int topBorderHeight = 30;
+            for (int i = 0; i < numberOfPolygons; i++) {
+                while (true) {
+                    int x = random.nextInt(800 - polygonSize);
+                    int y = random.nextInt(600 - polygonSize - topBorderHeight) + topBorderHeight;
+                    if (!isOverlapping(x, y, 185, 285) && !isOverlapping(x, y, 585, 285)) {
+                        Point[] squareShape = {
+                                new Point(x, y),
+                                new Point(x + polygonSize, y),
+                                new Point(x + polygonSize, y + polygonSize),
+                                new Point(x, y + polygonSize)
+                        };
+                        polygons.add(new Polygon(squareShape, new Point(x, y), 0));
+                        break;
+                    }
+                }
+            }
+        }
+    }
+
+    // Inner class to generate triangles
+    public class TriangleGenerator {
+        public void generate() {
+            int topBorderHeight = 30;
+            for (int i = 0; i < numberOfPolygons; i++) {
+                while (true) {
+                    int x = random.nextInt(800 - polygonSize);
+                    int y = random.nextInt(600 - polygonSize - topBorderHeight) + topBorderHeight;
+                    if (!isOverlapping(x, y, 185, 285) && !isOverlapping(x, y, 585, 285)) {
+                        Point[] triangleShape = {
+                                new Point(x, y),
+                                new Point(x + polygonSize / 2, y + polygonSize),
+                                new Point(x + polygonSize, y)
+                        };
+                        polygons.add(new Polygon(triangleShape, new Point(x, y), 0));
+                        break;
+                    }
+                }
+            }
         }
     }
 }
