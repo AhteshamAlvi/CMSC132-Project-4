@@ -7,7 +7,8 @@ CLASS: Polygon
 DESCRIPTION: A polygon is a sequence of points in space defined by a set of
              such points, an offset, and a rotation. The offset is the
              distance between the origin and the center of the shape.
-             The rotation is measured in degrees, 0-360.
+             The rotation is measured in degrees, 0-360.We also added our own stuff to this class.
+//             We check for collisons in this class as well.
 USAGE: You are intended to instantiate this class with a set of points that
        forever defines its shape, and then modify it by repositioning and
        rotating that shape. In defining the shape, the relative positions
@@ -76,7 +77,10 @@ class Polygon {
   
   public void rotate(int degrees) {rotation = (rotation+degrees)%360;}
   
-	public boolean tankObstacleCollision(ArrayList<Polygon> polygons) {
+//it checks to see if there is any collison between the tank and a polygon object 
+// it loops through the points of the polygon 
+// it then uses contain to see if any part is in the tank's points/// returns true if it is
+  public boolean tankObstacleCollision(ArrayList<Polygon> polygons) {
 		for(int i = 0; i < polygons.size(); i++) {
 			for(int j = 0; j < polygons.get(i).getPoints().length; j++) {
 				if(this.contains(polygons.get(i).getPoints()[j])) {
@@ -86,7 +90,8 @@ class Polygon {
 		}
 		return false;
 	}
-	
+	// checks to see if the tank collides with any polygons 
+  	// if it does then we just return true
 	public boolean obstacleTankCollision(Tank tank, 
 			ArrayList<Polygon> polygons) {
 		for(int i = 0; i < polygons.size(); i++) {
@@ -99,6 +104,9 @@ class Polygon {
 		return false;
 	}
 	
+	 //it checks to see if a circle that is shot, collides with a polygon
+	  // loops through each shot and checks collions 
+	  // if a bullet is found to be in a polygon then the bullet is removed
 	public void obstacleBulletCollision(Tank tank, 
 			ArrayList<Polygon> polygons, ArrayList<Canon> bullet) {
 		for(int i = 0; i < polygons.size(); i++) {
@@ -110,6 +118,8 @@ class Polygon {
 		}
 	}
 	
+	// CHECKS to see if a bullet and a tnak collide. if they do all the bullets get removed 
+  // the method returns to true to indicate that a collision happened
 	public boolean tankBulletCollision(Tank tank, ArrayList<Canon> bullet) {
 		for(int i = 0; i < bullet.size(); i++) {
 			if(this.contains(bullet.get(i).getPosition())) {
