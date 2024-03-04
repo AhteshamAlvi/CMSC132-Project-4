@@ -42,9 +42,7 @@ class TankGame extends Game {
  		this.tank1 = new Tank(tank1Points, a, 0, 37, 38, 39, 40, 77);
  		this.tank2 = new Tank(tank2Points, b, 180, 65, 87, 68, 83, 81);
  		
- 		this.randomPolygons = new RandomPolygons(50, 25);
- 		this.randomPolygons.generateBorder();
- 		this.randomPolygons.generateSquares();
+ 		this.randomPolygons = new RandomPolygons(15, 30);
 		
 		this.addKeyListener(tank1);	
 		this.addKeyListener(tank2);
@@ -76,7 +74,7 @@ class TankGame extends Game {
     	tank1.obstacleBulletCollision(tank1, RandomPolygons.getPolygons(), 
     			tank1.getCanon());
      	tank2.obstacleBulletCollision(tank2, RandomPolygons.getPolygons(), 
-    			tank1.getCanon());
+    			tank2.getCanon());
     	
     	brush.drawString("Player 1 Score: " + TankGame.tank1Score, 200, 15);
     	brush.drawString("Player 2 Score: " + TankGame.tank2Score, 500, 15);
